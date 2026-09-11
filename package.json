@@ -1,0 +1,70 @@
+{
+  "author": "Miroslav Machynka (Trebired)",
+  "config": {
+    "organization": {
+      "displayName": "Trebired",
+      "name": "trebired",
+      "website": "https://trebired.com"
+    }
+  },
+  "name": "@trebired/grammar",
+  "version": "0.1.0",
+  "description": "Czech and English grammar for interface text: personal-name declension in every case, plural-aware counts, ordinals, lists and articles.",
+  "type": "module",
+  "private": false,
+  "license": "MIT",
+  "packageManager": "bun@1.3.12",
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun run prepare:generated && rm -rf dist && tsc -p tsconfig.build.json && bun ./scripts/prepare-dist.mjs",
+    "demo": "bun run examples/greeting.ts",
+    "prepare:generated": "bun node_modules/@trebired/code-discipline/dist/cli.js fix imports",
+    "prepublishOnly": "bun run typecheck && bun run build && bun run verify:pack && bun run verify:grammar",
+    "typecheck": "bun run prepare:generated && tsc --noEmit",
+    "verify:grammar": "bun ./scripts/verify/grammar.mjs",
+    "verify:pack": "bun ./scripts/verify/pack.mjs"
+  },
+  "devDependencies": {
+    "@trebired/code-discipline": "^7.2.1",
+    "@trebired/configs": "^0.4.0",
+    "@types/bun": "^1.4.2",
+    "@types/node": "^24.13.3",
+    "typescript": "^6.0.3"
+  },
+  "keywords": [
+    "grammar",
+    "czech",
+    "declension",
+    "vocative",
+    "plural",
+    "i18n",
+    "bun"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Trebired/grammar"
+  },
+  "homepage": "https://github.com/Trebired/grammar#readme",
+  "bugs": {
+    "url": "https://github.com/Trebired/grammar/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
