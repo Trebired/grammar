@@ -40,6 +40,7 @@ Committed `*.spec.ts` and `*.spec.tsx` files are banned by Code Discipline. `ver
 
 ## Design Principles
 
-- Keep the root entry browser-safe with no runtime dependencies.
+- Keep the root entry browser-safe: runtime dependencies are limited to `@trebired/utils` and `@trebired/logger-adapter`'s browser entry, and nothing imports Node builtins or reads files.
+- Log through `src/logging.ts`; never call `console` or write to stdout.
 - Return a name unchanged when the rules cannot classify it; never guess a garbled form.
 - Keep rules data-driven: suffix patterns and exception tables, not per-name code.

@@ -1,6 +1,8 @@
 import { normalizeGrammarLanguage } from "#ml0qtbq1umai";
 import type { PluralCategory, PluralForms } from "#fa8gbb35wvs1";
 
+import { isRecord, toTrimmedString } from "@trebired/utils";
+
 const PLURAL_CATEGORIES: readonly PluralCategory[] = ["zero", "one", "two", "few", "many", "other"];
 const rulesCache = new Map<string, Intl.PluralRules>();
 
@@ -20,7 +22,7 @@ function fractionDigitsOf(text: string) {
 
 function parseCount(count: unknown) {
   if (typeof count === "number") return { fractionDigits: fractionDigitsOf(String(count)), value: count };
-  const text = String(count ?? "").trim().replace(",", ".");
+  const text = toTrimmedString(count).replace(",", ".");
   return { fractionDigits: fractionDigitsOf(text), value: text ? Number(text) : Number.NaN };
 }
 
@@ -36,7 +38,7 @@ function pluralCategory(
 }
 
 function isPluralForms(value: unknown): value is PluralForms {
-  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  if (!isRecord(value)) return false;
   const entries = Object.entries(value);
   if (!entries.some(([key]) => key === "other")) return false;
   return entries.every(([key, form]) => {

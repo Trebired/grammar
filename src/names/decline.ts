@@ -3,6 +3,7 @@ import type { DeclineOptions, Gender, GrammarCase, NameInput, ParsedName } from 
 import { isGrammarCase } from "./cases.js";
 import { czechWordForms, type NameRole } from "./cs/word.js";
 import { parseName } from "./parse.js";
+import { registeredOverride } from "./registry.js";
 import { nameText } from "./split.js";
 import { isDeclinableWord, withCase } from "./word.js";
 
@@ -42,7 +43,7 @@ function declineName(
 ): string {
   const text = nameText(input).trim();
   if (!text || !isGrammarCase(grammaticalCase)) return text;
-  const override = options.overrides?.[text]?.[grammaticalCase];
+  const override = options.overrides?.[text]?.[grammaticalCase] ?? registeredOverride(text, grammaticalCase);
   if (override) return override;
   if (grammaticalCase === "nominative" || normalizeGrammarLanguage(language) !== "cs") return text;
   const parsed = parseName(input, "cs");

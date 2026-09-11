@@ -1,3 +1,5 @@
+import { toLowerString, toTrimmedString } from "@trebired/utils";
+
 const TRIGGERS: Record<string, string> = {
   k: "kg",
   s: "szšž",
@@ -7,10 +9,10 @@ const TRIGGERS: Record<string, string> = {
 const PRONOUNS = new Set(["mne", "mně", "mnou", "mě"]);
 
 function vocalizePreposition(preposition: string, nextWord: string): string {
-  const prep = String(preposition ?? "").trim();
+  const prep = toTrimmedString(preposition);
   const lower = prep.toLowerCase();
   const triggers = TRIGGERS[lower];
-  const next = String(nextWord ?? "").trim().toLowerCase();
+  const next = toLowerString(nextWord);
   if (!triggers || !next) return prep;
   const vocalize = triggers.includes(next[0]) || PRONOUNS.has(next);
   if (!vocalize) return prep;

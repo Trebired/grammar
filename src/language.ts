@@ -1,9 +1,10 @@
+import { toLowerString } from "@trebired/utils";
 import type { GrammarLanguage } from "./types.js";
 
 const GRAMMAR_LANGUAGES: readonly GrammarLanguage[] = ["cs", "en"];
 
 function normalizeGrammarLanguage(language: unknown): GrammarLanguage {
-  const base = String(language ?? "").trim().toLowerCase().split(/[-_]/u)[0];
+  const base = toLowerString(language).split(/[-_]/u)[0];
   return base === "cs" ? "cs" : "en";
 }
 

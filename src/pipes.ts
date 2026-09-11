@@ -7,6 +7,7 @@ import { formatNumber, ordinal } from "./plural/count.js";
 import { withIndefiniteArticle } from "./text/article.js";
 import { capitalize, lower, upper } from "./text/casing.js";
 import { formatList } from "./text/list.js";
+import { grammarLog } from "./logging.js";
 import type { Gender, ListOptions, NameInput, PossessedGender } from "./types.js";
 
 const GRAMMAR_PIPES: readonly string[] = [
@@ -44,6 +45,7 @@ function formatPipe(value: unknown, pipe: string, args: string[], language: unkn
   if (pipe === "upper") return upper(stringify(value), language);
   if (pipe === "lower") return lower(stringify(value), language);
   if (pipe === "capitalize") return capitalize(stringify(value), language);
+  grammarLog().warn("pipes", "unknown pipe", { pipe });
   return stringify(value);
 }
 

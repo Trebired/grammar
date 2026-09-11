@@ -1,6 +1,8 @@
 import { normalizeGrammarLanguage } from "#ml0qtbq1umai";
 import type { ListOptions } from "#fa8gbb35wvs1";
 
+import { toTrimmedString } from "@trebired/utils";
+
 type ListFormatter = { format(values: string[]): string };
 type ListFormatConstructor = new(language: string, options: ListOptions) => ListFormatter;
 
@@ -11,7 +13,7 @@ function listFormatConstructor(): ListFormatConstructor | null {
 
 function formatList(items: unknown, language?: unknown, options: ListOptions = {}): string {
   const values = (Array.isArray(items) ? items : [items])
-  .map((item) => String(item ?? "").trim())
+  .map((item) => toTrimmedString(item))
   .filter(Boolean);
   const ListFormat = listFormatConstructor();
   if (!ListFormat) return values.join(", ");

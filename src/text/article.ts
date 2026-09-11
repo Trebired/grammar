@@ -1,3 +1,5 @@
+import { toTrimmedString } from "@trebired/utils";
+
 const SILENT_H_PREFIXES = ["heir", "herb", "honest", "honor", "honour", "hour"];
 const CONSONANT_SOUND_PREFIXES = [
   "eu",
@@ -21,7 +23,7 @@ const CONSONANT_SOUND_PREFIXES = [
 const VOWEL_SOUND_LETTERS = "aefhilmnorsx";
 
 function firstToken(word: string) {
-  return String(word ?? "").trim().split(/[\s-]+/u)[0] || "";
+  return toTrimmedString(word).split(/[\s-]+/u)[0] || "";
 }
 
 function numberArticle(token: string): "a" | "an" {
@@ -51,7 +53,7 @@ function indefiniteArticle(word: string): "a" | "an" {
 }
 
 function withIndefiniteArticle(word: string): string {
-  const text = String(word ?? "").trim();
+  const text = toTrimmedString(word);
   return text ? `${indefiniteArticle(text)} ${text}` : text;
 }
 

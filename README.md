@@ -39,13 +39,43 @@ A name is a string (`"Ing. Jan Novák, Ph.D."`) or parts (`{ given, surname, gen
 
 ### Unknown names stay unchanged
 
-A word the rules cannot classify, such as a foreign name ending in `-i` or a female surname without `-á`, is returned as written. The package never garbles a name; pass `overrides` for anything it gets wrong.
+A word the rules cannot classify, such as a foreign name ending in `-i` or a female surname without `-á`, is returned as written. The package never garbles a name; pass `overrides` per call, or register them once with `configureGrammar()`, for anything it gets wrong.
 
 ### Counts and plural forms
 
 Plural forms are objects keyed by CLDR category (`zero`, `one`, `two`, `few`, `many`, `other`; `other` is required). Czech uses `one` (1), `few` (2–4), `many` (decimals, 1,5 souboru) and `other` (0, 5+); English uses `one` and `other`. Numbers are formatted for the language (1 000 and 1,5 in Czech).
 
+## Configuration
+
+### configureGrammar
+
+Call `configureGrammar()` once where the application starts, on the server and in the browser. Every option is optional, and calling it again adds to what was registered before.
+
+```ts
+import { configureGrammar } from "@trebired/grammar";
+
+configureGrammar({
+  logger,
+  names: { feminine: ["Nikita"], masculine: ["Saša"] },
+  overrides: { "Jan Křtitel": { vocative: "Jane Křtiteli" } },
+});
+```
+
+- `logger` / `loggerAdapter`: any logger `@trebired/logger-adapter` accepts. Without one the package is silent.
+- `names`: given names whose gender the tables get wrong or do not know; they win over the built-in tables.
+- `overrides`: exact forms for a full name, per case; a per-call `overrides` option still wins.
+
+## Runtime
+
+### Logging
+
+The package logs through `@trebired/logger-adapter`'s browser entry, so the same code runs in Bun and in the browser. Its source is the package name and its group prefix comes from the shipped `.trebired/logger/config.ts` (`trebired.grammar`). It logs its initialization when `configureGrammar()` receives a logger, and warns when a message uses a pipe the package does not provide. With no logger configured nothing is printed.
+
 ## Public API
+
+### Configuration
+
+- `configureGrammar({ logger, loggerAdapter, names, overrides })` and the `GrammarConfig` and `GrammarNames` types.
 
 ### Names
 
@@ -81,4 +111,5 @@ This package does not:
 - translate text or store messages
 - guess a language from text
 - support languages other than Czech and English
-- ship dictionaries or depend on other packages
+- ship name dictionaries; its only runtime dependencies are `@trebired/utils` and `@trebired/logger-adapter`
+- read a config file; configuration is the `configureGrammar()` call, because the package also runs in the browser

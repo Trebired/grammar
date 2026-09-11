@@ -1,3 +1,5 @@
+import type { LoggerAdapterLogger, LoggerAdapterWriter } from "@package/logger-adapter/browser";
+
 type GrammarLanguage = "cs" | "en";
 
 type GrammarCase =
@@ -32,6 +34,18 @@ type ParsedName = {
 type CaseForms = Record<GrammarCase, string>;
 
 type NameOverrides = Record<string, Partial<Record<GrammarCase, string>>>;
+
+type GrammarNames = {
+  feminine?: string[];
+  masculine?: string[];
+};
+
+type GrammarConfig = {
+  logger?: LoggerAdapterLogger | null;
+  loggerAdapter?: LoggerAdapterWriter | null;
+  names?: GrammarNames;
+  overrides?: NameOverrides;
+};
 
 type DeclineOptions = {
   gender?: Gender;
@@ -69,7 +83,9 @@ export type {
   DeclineOptions,
   Gender,
   GrammarCase,
+  GrammarConfig,
   GrammarLanguage,
+  GrammarNames,
   ListOptions,
   NameInput,
   NameOverrides,

@@ -1,4 +1,5 @@
 import type { NameInput, ParsedName } from "#fa8gbb35wvs1";
+import { isRecord, toString as toText } from "@trebired/utils";
 import { isTitle } from "./titles.js";
 import { PARTICLES } from "./word.js";
 
@@ -6,7 +7,7 @@ type SplitName = Omit<ParsedName, "gender">;
 
 function nameText(input: NameInput | unknown): string {
   if (typeof input === "string") return input;
-  if (!input || typeof input !== "object") return String(input ?? "");
+  if (!isRecord(input)) return toText(input);
   const parts = input as { full?: string; given?: string; surname?: string };
   if (parts.full) return String(parts.full);
   return [parts.given, parts.surname].filter(Boolean).join(" ");

@@ -1,3 +1,4 @@
+export { configureGrammar } from "./configure.js";
 export { GRAMMAR_LANGUAGES, normalizeGrammarLanguage } from "./language.js";
 export { GRAMMAR_CASES, isGrammarCase } from "./names/cases.js";
 export {
@@ -25,7 +26,9 @@ export type {
   DeclineOptions,
   Gender,
   GrammarCase,
+  GrammarConfig,
   GrammarLanguage,
+  GrammarNames,
   ListOptions,
   NameInput,
   NameOverrides,

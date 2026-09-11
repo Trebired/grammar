@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import { builtinModules } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { resolveLogger } from "@package/logger-adapter";
 import { CZECH_FULL_NAMES, CZECH_WORDS, GENDERS, POSSESSIVES } from "./fixtures/names.mjs";
 import { ARTICLES, CATEGORIES, COUNTS, LISTS, ORDINALS, PIPES, PREPOSITIONS } from "./fixtures/text.mjs";
 
@@ -9,6 +10,7 @@ const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..",
 const organizationCodes = [116, 114, 101, 98, 105, 114, 101, 100];
 const grammar = await import(`@${String.fromCharCode(...organizationCodes)}/grammar`);
 const DECLINED_CASES = ["genitive", "dative", "accusative", "vocative", "locative", "instrumental"];
+const log = resolveLogger({ source: "@trebired/grammar" });
 const failures = [];
 
 function check(actual, expected, label) {
@@ -95,6 +97,22 @@ async function verifyBrowserSafe() {
   }
 }
 
+function verifyConfiguration() {
+  const events = [];
+  grammar.configureGrammar({
+      logger: {},
+      loggerAdapter: (_logger, event) => events.push(event),
+      names: { masculine: ["Saša"] },
+      overrides: { "Jan Křtitel": { vocative: "Jane Křtiteli" } },
+  });
+  check(grammar.detectGender("Saša", "cs"), "m", "registered name wins over the tables");
+  check(grammar.vocative("Jan Křtitel", "cs"), "Jane Křtiteli", "registered override");
+  check(grammar.vocative("Jan Křtitel", "cs", { overrides: { "Jan Křtitel": { vocative: "X" } } }), "X", "call override wins");
+  check(grammar.applyGrammarPipe("x", "nope", [], "cs"), "x", "unknown pipe keeps the value");
+  check(events.some((event) => /initialized$/u.test(event.message)), true, "initialization is logged");
+  check(events.some((event) => event.level === "warn" && /unknown pipe/u.test(event.message)), true, "unknown pipe is logged");
+}
+
 async function main() {
   verifyCzechWords();
   verifyCzechFullNames();
@@ -102,11 +120,12 @@ async function main() {
   verifyCounts();
   verifyText();
   await verifyBrowserSafe();
+  verifyConfiguration();
   if (failures.length) {
-    console.error(`${failures.length} grammar check(s) failed:\n${failures.join("\n")}`);
+    log.error("verify.grammar", `${failures.length} grammar check(s) failed`, { failures });
     process.exit(1);
   }
-  console.log("Grammar verification succeeded.");
+  log.info("verify.grammar", "Grammar verification succeeded.");
 }
 
 await main();
