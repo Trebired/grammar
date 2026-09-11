@@ -16,7 +16,7 @@ function vocalizePreposition(preposition: string, nextWord: string): string {
   if (!triggers || !next) return prep;
   const vocalize = triggers.includes(next[0]) || PRONOUNS.has(next);
   if (!vocalize) return prep;
-  return prep === prep.toUpperCase() && prep !== lower ? `${prep}E` : `${prep}e`;
+  return `${prep}e`;
 }
 
 export { vocalizePreposition };

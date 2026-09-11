@@ -97,7 +97,7 @@ The package logs through `@trebired/logger-adapter`'s browser entry, so the same
 
 ### Pipes
 
-`applyGrammarPipe(value, pipe, args, language)` is the single entry message formatters call. Pipes: every case name, `possessive`, `number`, `ordinal`, `list`, `article`, `upper`, `lower`, `capitalize`. A case pipe takes an optional gender argument (`vocative:f`); `possessive` takes the possessed gender (`possessive:f`). Unknown pipes return the value as text. `GRAMMAR_PIPES` and `isGrammarPipe(name)` list and test them.
+`applyGrammarPipe(value, pipe, args, language)` is the single entry message formatters call. Pipes: every case name, `possessive`, `number`, `ordinal`, `list`, `article`, `prep`, `upper`, `lower`, `capitalize`. A case pipe takes an optional gender argument (`vocative:f`); `possessive` takes the possessed gender (`possessive:f`). `prep` takes the preposition and prints it in front of the value, vocalized for Czech: `{{ table | prep:z }}` gives "z tabulky" or "ze sessions", `{{ place | prep:V }}` gives "Ve Vsetíně". Other languages print the preposition unchanged. Unknown pipes return the value as text. `GRAMMAR_PIPES` and `isGrammarPipe(name)` list and test them.
 
 ### Types
 

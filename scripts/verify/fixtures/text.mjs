@@ -98,6 +98,12 @@ const PIPES = [
   [["a", "b"], "list", [], "en", "a and b"],
   ["hour", "article", [], "en", "an hour"],
   ["dobrý den", "capitalize", [], "cs", "Dobrý den"],
+  ["sessions", "prep", ["z"], "cs", "ze sessions"],
+  ["tabulky", "prep", ["z"], "cs", "z tabulky"],
+  ["Vsetíně", "prep", ["V"], "cs", "Ve Vsetíně"],
+  ["kolegovi", "prep", ["k"], "cs", "ke kolegovi"],
+  ["sessions", "prep", ["from"], "en", "from sessions"],
+  ["table", "prep", [], "cs", "table"],
   ["x", "unknown", [], "cs", "x"],
 ];
 

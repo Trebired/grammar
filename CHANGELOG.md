@@ -4,6 +4,11 @@ All notable changes to `@trebired/grammar` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 0.2.0
+
+- Added the `prep` pipe. `{{ table | prep:z }}` prints the preposition in front of the value and vocalizes it for Czech, so a message no longer hard-codes "z {{table}}" and prints "z sessions" where Czech needs "ze sessions". An uppercase preposition starts a sentence (`prep:V` gives "Ve Vsetíně"). Other languages print the preposition unchanged. `GRAMMAR_PIPES` now lists `prep`, so the `@trebired/i18n` checker accepts it.
+- Fixed `vocalizePreposition()` uppercasing the vowel after a capital preposition. The prepositions are single letters, so a capital always starts a sentence: `vocalizePreposition("V", "Vsetíně")` returned "VE" and now returns "Ve".
+
 ## 0.1.1
 
 - Added `configureGrammar()`, which takes a logger, given names with their gender, and name overrides for the whole application. Registered names win over the built-in gender tables; a per-call `overrides` option still wins over registered ones.

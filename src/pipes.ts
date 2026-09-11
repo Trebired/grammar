@@ -7,6 +7,7 @@ import { formatNumber, ordinal } from "./plural/count.js";
 import { withIndefiniteArticle } from "./text/article.js";
 import { capitalize, lower, upper } from "./text/casing.js";
 import { formatList } from "./text/list.js";
+import { vocalizePreposition } from "./text/preposition.js";
 import { grammarLog } from "./logging.js";
 import type { Gender, ListOptions, NameInput, PossessedGender } from "./types.js";
 
@@ -19,6 +20,7 @@ const GRAMMAR_PIPES: readonly string[] = [
   "number",
   "ordinal",
   "possessive",
+  "prep",
   "upper",
 ];
 
@@ -35,7 +37,16 @@ function possessedArg(value: string | undefined): PossessedGender | undefined {
   return value === "m" || value === "f" || value === "n" ? value : undefined;
 }
 
+function prepositionPhrase(value: unknown, preposition: string | undefined, language: unknown) {
+  const text = stringify(value);
+  const prep = String(preposition || "").trim();
+  if (!prep || !text) return text;
+  const word = normalizeGrammarLanguage(language) === "cs" ? vocalizePreposition(prep, text) : prep;
+  return `${word} ${text}`;
+}
+
 function formatPipe(value: unknown, pipe: string, args: string[], language: unknown) {
+  if (pipe === "prep") return prepositionPhrase(value, args[0], language);
   if (pipe === "number") return formatNumber(value, language);
   if (pipe === "ordinal") return ordinal(value, language);
   if (pipe === "list") return formatList(value, language, { type: args[0] as ListOptions["type"] });

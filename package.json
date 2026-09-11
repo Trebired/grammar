@@ -8,7 +8,7 @@
     }
   },
   "name": "@trebired/grammar",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Czech and English grammar for interface text: personal-name declension in every case, plural-aware counts, ordinals, lists and articles.",
   "type": "module",
   "private": false,
