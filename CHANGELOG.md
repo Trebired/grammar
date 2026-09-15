@@ -4,6 +4,11 @@ All notable changes to `@trebired/grammar` will be documented here.
 
 This project follows semantic versioning once published.
 
+## 0.2.1
+
+- Moved to `@trebired/logger-adapter` 0.6.0, which depends on `@trebired/logger` 3.0.0.
+- Updated the shipped `.trebired/logger/config.ts` `forVersion` to `3.0.0`. The logger checks `forVersion` by major and minor version, so under `@trebired/logger` 3.0 the old `2.7.0` value failed the check and this package's log prefix was dropped.
+
 ## 0.2.0
 
 - Added the `prep` pipe. `{{ table | prep:z }}` prints the preposition in front of the value and vocalizes it for Czech, so a message no longer hard-codes "z {{table}}" and prints "z sessions" where Czech needs "ze sessions". An uppercase preposition starts a sentence (`prep:V` gives "Ve Vsetíně"). Other languages print the preposition unchanged. `GRAMMAR_PIPES` now lists `prep`, so the `@trebired/i18n` checker accepts it.
