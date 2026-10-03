@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "category": "package",
+  "subcategory": "web",
+  "status": "active",
+  "npm": "@trebired/grammar",
+  "description": {
+    "en": "Czech and English grammar for interface text, from name declension to plurals.",
+    "cs": "Česká a anglická gramatika pro texty v rozhraní, od skloňování jmen po množná čísla."
+  }
+}
